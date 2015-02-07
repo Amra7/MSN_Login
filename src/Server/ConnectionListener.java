@@ -4,12 +4,21 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-
+/**
+ * Class ConnectionListener listens client and sent data to the server.
+ * @author amrapoprzanovic
+ *
+ */
 public class ConnectionListener extends Thread {
 
 	private InputStream is;
 	private String sender;
 
+	/**
+	 * Constructor for ConnectionListener.
+	 * @param is - InputStream.
+	 * @param sender - users name.
+	 */
 	public ConnectionListener(InputStream is, String sender) {
 		this.is = is;
 		this.sender = sender;

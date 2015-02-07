@@ -2,6 +2,8 @@ package Server;
 
 import java.io.File;
 import java.io.IOException;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -23,6 +25,11 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.xml.sax.SAXException;
 
+/**
+ * Class XMLConnection that creates xml documents and write username and password every time when new user connects.
+ * @author amrapoprzanovic
+ *
+ */
 public class XMLConnection {
 
 	private static Document xmldoc;
@@ -47,6 +54,7 @@ public class XMLConnection {
 
 	public static int userLogin(String username, String password) {
 
+		String hashPassword = hashPassword(password);
 		String expersion = "//user[@username=\"" + username
 				+ "\" and @password=\"" + password + "\"]";
 		System.out.println(expersion);
@@ -68,7 +76,11 @@ public class XMLConnection {
 
 					Element newUsername = xmldoc.createElement("user");
 					newUsername.setAttribute("username", username);
-					newUsername.setAttribute("password", password);
+//					newUsername.setAttribute("password", password);
+					
+					//Changed password with hashPassword
+					newUsername.setAttribute("password", hashPassword);
+					
 					xmldoc.getElementsByTagName("users").item(0)
 							.appendChild(newUsername);
 					System.out.println(xmldoc.toString());
@@ -85,6 +97,7 @@ public class XMLConnection {
 
 					} catch (TransformerConfigurationException e) {
 						e.printStackTrace();
+						return -4; 
 
 					} catch (TransformerFactoryConfigurationError e) {
 						e.printStackTrace();
@@ -93,6 +106,7 @@ public class XMLConnection {
 
 					} catch (TransformerException e) {
 						e.printStackTrace();
+						return -4; 
 					}
 
 					return -1; // password is not good
@@ -106,6 +120,33 @@ public class XMLConnection {
 		}
 
 		return 0; // everything is ok,
+	}
+	
+	// Zadaca
+	
+	/**
+	 * Method that converts password to hash.
+	 * @param password - String password that we forwarded.
+	 * @return new String of hash password.
+	 */
+	private static String hashPassword( String password){
+		String generatedPassword = "";
+		MessageDigest md;
+		try {
+			md = MessageDigest.getInstance("MD%");
+			md.update(password.getBytes());
+			byte [] byteArr = md.digest();
+			StringBuilder sb = new StringBuilder();
+			for ( int i =0 ; i<byteArr.length; i++){
+				sb.append(Integer.toString((byteArr[i] & 0xff) + 0x100, 16).substring(1));
+				generatedPassword = sb.toString();
+				
+			}
+		} catch (NoSuchAlgorithmException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return generatedPassword;
 	}
 
 	public static void main(String[] args) {

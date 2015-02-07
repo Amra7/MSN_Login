@@ -10,6 +10,8 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -17,6 +19,7 @@ import java.io.OutputStream;
 import java.net.Socket;
 
 import javax.swing.JButton;
+import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -38,7 +41,12 @@ public class ChatGui implements Runnable {
 
 		JFrame window = new JFrame("MSN");
 		JPanel content = new JPanel();
-		JButton buttonSend = new JButton("SEND");
+		JButton buttonSend = new JButton("SEND");  // button for sending message
+		
+		/* add this part 7*/
+		JButton buttonFile = new JButton("Attach File"); // button for attaching file
+		buttonFile.addActionListener(new FileHandler());
+		
 		display = new JTextArea();
 		// display.setPreferredSize(new Dimension(300, 200));
 		display.setEditable(false);
@@ -57,6 +65,7 @@ public class ChatGui implements Runnable {
 		content.add(areaScrollPane);
 		content.add(inputMsg);
 		content.add(buttonSend);
+		content.add(buttonFile);
 
 		window.add(content);
 
@@ -76,7 +85,7 @@ public class ChatGui implements Runnable {
 			}
 		
 		});
-		window.setSize(400, 300);
+		window.setSize(400, 350);
 		window.setVisible(true);
 
 	}
@@ -111,6 +120,36 @@ public class ChatGui implements Runnable {
 		}
 	}
 
+	private class FileHandler extends KeyAdapter implements ActionListener{
+		
+		public void sendFile(){
+			JFileChooser chooser =  new JFileChooser();
+			chooser.setCurrentDirectory(new File("/Users/amrapoprzanovic/Documents"));
+			int returnValue = chooser.showSaveDialog(null);
+			if (returnValue == JFileChooser.APPROVE_OPTION){
+				FileWriter fw;
+				try {
+					fw = new FileWriter(chooser.getSelectedFile());
+					fw.write("File selected");
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				
+			}
+		}
+
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			sendFile();
+			
+		}
+		public void keyPressed(KeyEvent e) {
+			if (e.getKeyCode() == 10){
+				sendFile();
+			}
+		}
+	}
 	/**
 	 * Sending message.
 	 * @author amrapoprzanovic
@@ -154,4 +193,6 @@ public class ChatGui implements Runnable {
 		}
 
 	}
+	
+	
 }
