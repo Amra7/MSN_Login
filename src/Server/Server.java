@@ -11,7 +11,11 @@ import java.util.Random;
 import javax.xml.parsers.ParserConfigurationException;
 
 import org.xml.sax.SAXException;
-
+/**
+ * Class Server - creates server and connect to the client.
+ * @author amrapoprzanovic
+ *
+ */
 public class Server {
 
 	public static final int port = 1717;
@@ -52,11 +56,17 @@ public class Server {
 		}
 	}
 
+	/**
+	 * Static method that read cilent's username and password
+	 * @param is - OutputSteram frm client.
+	 * @return - name of client
+	 * @throws IOException
+	 */
 	private static String handShake(InputStream is) throws IOException {
 		BufferedReader br = new BufferedReader(new InputStreamReader(is));
 
 		String name = br.readLine();
-		name = name.replace("%", ""); // sanela je ostavla ""
+		name = name.replace("%", ""); 
 		String password = br.readLine();
 		int num = XMLConnection.userLogin(name, password);
 		if (num !=0){
@@ -66,6 +76,10 @@ public class Server {
 
 	}
 
+	/**
+	 * MAin method that starts server.
+	 * @param args
+	 */
 	public static void main(String[] args) {
 		try {
 			new XMLConnection();
@@ -84,6 +98,7 @@ public class Server {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-	}
+	}//end of main method
 
+	// end of class
 }

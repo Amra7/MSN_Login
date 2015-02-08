@@ -180,12 +180,13 @@ public class Login {
 			for ( int i =0 ; i<byteArr.length; i++){
 				sb.append(Integer.toString((byteArr[i] & 0xff) + 0x100, 16).substring(1));
 				generatedPassword = sb.toString();
-				
+				System.out.println(generatedPassword);
 			}
 		} catch (NoSuchAlgorithmException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return generatedPassword;
+	
 	}
 }

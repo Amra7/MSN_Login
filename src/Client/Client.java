@@ -6,12 +6,19 @@ import java.util.Scanner;
 
 import GUI.ChatGui;
 
-
+/**
+ * Class client that connect to the server.
+ * @author amrapoprzanovic
+ *
+ */
 public class Client {
 	public static final int port = 1717;
 	public static final String host = "127.0.0.1"; //"10.0.82.62"
 	
-	
+	/**
+	 * Main method that creates Login window where client can put his username and password.
+	 * @param args
+	 */
 	public static void main(String[] args) {
 		
 		Login log = new Login(host, port);
@@ -29,5 +36,5 @@ public class Client {
 //		} catch (IOException e) {
 //			e.printStackTrace();
 //		}
-	}
-}
+	} // end of main method
+} // end of class

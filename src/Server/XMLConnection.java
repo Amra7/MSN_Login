@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
+import javax.swing.JOptionPane;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -101,14 +102,17 @@ public class XMLConnection {
 
 					} catch (TransformerFactoryConfigurationError e) {
 						e.printStackTrace();
+						showError("Please try to register again!");
 						return -4; // try again we did not not succeed to
 									// register in xml
 
+
 					} catch (TransformerException e) {
 						e.printStackTrace();
+						showError("Please try to register again!");
 						return -4; 
 					}
-
+					showError("Please enter your password or username!");
 					return -1; // password is not good
 				}
 
@@ -116,12 +120,15 @@ public class XMLConnection {
 
 		} catch (XPathExpressionException e) {
 			e.printStackTrace();
+			showError("Please wait and try again!");
 			return -3; // if xml doc is not good
 		}
-
+		
 		return 0; // everything is ok,
 	}
-	
+	private static void showError( String message){
+		JOptionPane.showMessageDialog(null, message, "ERROR", JOptionPane.WARNING_MESSAGE);
+	}
 	// Zadaca
 	
 	/**
@@ -133,7 +140,7 @@ public class XMLConnection {
 		String generatedPassword = "";
 		MessageDigest md;
 		try {
-			md = MessageDigest.getInstance("MD%");
+			md = MessageDigest.getInstance("MD5");
 			md.update(password.getBytes());
 			byte [] byteArr = md.digest();
 			StringBuilder sb = new StringBuilder();
